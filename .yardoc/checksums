@@ -1,0 +1,7 @@
+lib/veyor.rb fcfd170b7c5d45b4f4037d9bf9286926965858cc
+lib/veyor/utils.rb cd80480234240bf5e578300324ebf28550c85065
+lib/veyor/error.rb 27db5e9c7e664934ae0e8971f301f13a081ee49c
+lib/veyor/request.rb 2f0392563a40c8e2b48698aa8d06575c3d7a65e0
+lib/veyor/faraday.rb a10cef8e99d6c985eb8d45b878f081b764a466d6
+lib/veyor/version.rb 4d1a92bd3ce2d6b9977ec83f5e439a1c4505322c
+lib/veyor/helpers/configuration.rb f6345f006c6efa967c31f7c94b729c2674609a82
