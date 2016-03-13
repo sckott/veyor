@@ -34,5 +34,3 @@ build/
 .rvmrc
 
 cache/
-
-lib/serrano/response.rb
