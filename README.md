@@ -1,8 +1,6 @@
 # Veyor
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/veyor`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Appveyor API client for Ruby
 
 ## Installation
 
@@ -30,6 +28,11 @@ Veyor.configuration do |config|
   config.account_token = "<your token>"
 end
 ```
+
+Or store those in env var keys like
+
+* `ENV['APPVEYOR_ACCOUNT_NAME']`
+* `ENV['APPVEYOR_API_TOKEN']`
 
 ## Development
 
