@@ -6,19 +6,28 @@ Appveyor API client for Ruby
 
 Add this line to your application's Gemfile:
 
-```ruby
-gem 'veyor'
+```
+git clone https://github.com/sckott/veyor.git
+cd veyor
+rake install
 ```
 
-And then execute:
+## gem API
 
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install veyor
+* `Veyor.projects` - get all projects
+* `Veyor.project` - get project by name, branch, or build version
+* `Veyor.project_history` - get project history
+* `Veyor.project_deployments` - get project deployments
+* `Veyor.project_settings` - get project settings
+* `Veyor.build_start` - start a build
+* `Veyor.build_cancel` - cancel a build
+* more to come ...
 
 ## Usage
+
+```ruby
+require 'veyor'
+```
 
 ### setup
 
@@ -34,11 +43,35 @@ Or store those in env var keys like
 * `ENV['APPVEYOR_ACCOUNT_NAME']`
 * `ENV['APPVEYOR_API_TOKEN']`
 
-## Development
+### get projects
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake false` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+```ruby
+Veyor.projects()
+```
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+### get a project by name
+
+```ruby
+Veyor.project(project: 'cowsay')
+```
+
+### get project history
+
+```ruby
+x = Veyor.project_history(project: 'cowsay')
+```
+
+### start a build
+
+```ruby
+Veyor.build_start(project: 'cowsay')
+```
+
+### cancel a build
+
+```ruby
+Veyor.build_cancel(project: 'cowsay', version: '1.0.697')
+```
 
 ## Contributing
 
