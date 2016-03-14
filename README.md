@@ -22,7 +22,14 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### setup
+
+```ruby
+Veyor.configuration do |config|
+  config.account_name = "janedoe"
+  config.account_token = "<your token>"
+end
+```
 
 ## Development
 
