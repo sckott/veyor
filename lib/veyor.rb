@@ -104,7 +104,7 @@ module Veyor
   end
 
   ##
-  # Get last build of a project
+  # Get a single project - gets the latest build
   #
   # @!macro veyor_options
   # @!macro veyor_params
