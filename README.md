@@ -41,13 +41,7 @@ More to come in future `veyor` versions
 
 For changes see the [Changelog](https://github.com/sckott/veyor/blob/master/CHANGELOG.md)
 
-## Usage
-
-```ruby
-require 'veyor'
-```
-
-### setup
+## Setup
 
 ```ruby
 Veyor.configuration do |config|
@@ -56,10 +50,12 @@ Veyor.configuration do |config|
 end
 ```
 
-Or store those in env var keys like
+Ideally, store those in env var keys like
 
 * `ENV['APPVEYOR_ACCOUNT_NAME']`
 * `ENV['APPVEYOR_API_TOKEN']`
+
+## In Ruby
 
 ### get projects
 
@@ -91,9 +87,95 @@ Veyor.build_start(project: 'cowsay')
 Veyor.build_cancel(project: 'cowsay', version: '1.0.697')
 ```
 
+## On the CLI
+
+List commands
+
+```
+veyor
+```
+
+```
+Commands:
+  veyor help [COMMAND]  # Describe available commands or one specific command
+  veyor project [Name]  # List a project
+  veyor projects        # List projects
+```
+
+List your projects
+
+```
+veyor projects
+```
+
+```
+alm
+analogsea
+aspacer
+bmc
+bold
+ccafs
+... cutoff
+```
+
+Get back json - parse with [jq](https://stedolan.github.io/jq/)
+
+```
+veyor projects --json | jq .[].builds[].status
+```
+
+```
+"cancelled"
+"success"
+"success"
+"failed"
+"success"
+"success"
+```
+
+List metadata for single project
+
+```
+veyor project cowsay
+```
+
+```
+project: cowsay
+repository: sckott/cowsay
+branch: master
+build status: cancelled
+build ID: 3906530
+```
+
+JSON
+
+```
+veyor project cowsay --json | jq .project
+```
+
+```json
+{
+  "projectId": 44589,
+  "accountId": 13586,
+  "accountName": "sckott",
+  "builds": [],
+  "name": "cowsay",
+  "slug": "cowsay",
+  "repositoryType": "gitHub",
+  "repositoryScm": "git",
+  "repositoryName": "sckott/cowsay",
+  "repositoryBranch": "master",
+  "isPrivate": false,
+  "skipBranchesWithoutAppveyorYml": false,
+  "enableSecu
+...cutoff
+```
+
+
+
 ## Contributing
 
-Bug reports and pull requests are welcome. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Code of Conduct][CONDUCT.md].
+Bug reports and pull requests are welcome. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Code of Conduct](https://github.com/sckott/veyor/blob/master/CONDUCT.md).
 
 
 ## License
