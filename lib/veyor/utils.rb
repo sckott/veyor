@@ -3,3 +3,30 @@ def make_ua
   habua = 'Veyor/v' + Veyor::VERSION
   return requa + ' ' + habua
 end
+
+def prep_args(limit, start_build, branch)
+	args = { recordsNumber: limit, startBuildId: start_build, branch: branch }
+  opts = args.delete_if { |k, v| v.nil? }
+  return opts
+end
+
+def get_account(x)
+	if x.nil?
+	  x = Veyor.account_name
+	  if x.nil?
+	  	raise 'no account name found - one must be supplied'
+	  end
+	end
+	return x
+end
+
+def prep_route(route, account, project, branch, version)
+  if branch.nil? && version.nil?
+    route = sprintf('%s/%s/%s', route, account, project)
+  elsif !branch.nil? && version.nil?
+    route = sprintf('%s/%s/%s/branch/%s', route, account, project, branch)
+  elsif branch.nil? && !version.nil?
+    route = sprintf('%s/%s/%s/build/%s', route, account, project, version)
+  end
+  return route
+end

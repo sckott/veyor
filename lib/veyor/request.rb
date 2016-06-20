@@ -1,6 +1,8 @@
 require "faraday"
+require 'faraday_middleware'
 require "multi_json"
 
+require 'veyor/faraday'
 require "veyor/error"
 require 'veyor/utils'
 require 'veyor/helpers/configuration'
@@ -13,63 +15,91 @@ module Veyor
   class Request #:nodoc:
 
     attr_accessor :route
-    attr_accessor :account
-    attr_accessor :project
+    attr_accessor :args
+    attr_accessor :body
     attr_accessor :options
     attr_accessor :verbose
 
-    def initialize(route, account, project, options, verbose)
-      self.account = account
-      self.project = project
+    def initialize(route, args, body, options, verbose)
+      self.route   = route
+      self.args    = args
+      self.body    = body
       self.options = options
       self.verbose = verbose
+
+      self.perform
+    end
+
+    def get
+      res = _veyor_get(self.route, self.args)
+      return parse_result(res)
+    end
+
+    def post
+      res = _veyor_post(self.route, self.body)
+      return parse_result(res)
+    end
+
+    def delete
+      return _veyor_delete(self.route).status
     end
 
     def perform
-      # args = { query: self.query, filter: filt, offset: self.offset,
-      #         rows: self.limit, sample: self.sample, sort: self.sort,
-      #         order: self.order, facet: self.facet }
-      # opts = args.delete_if { |k, v| v.nil? }
-
-      # body = { :accountName => 'sckott', :projectSlug => 'cowsay', :branch => 'master' }
+      if self.args.nil?
+        self.args = {}
+      end
 
       if verbose
-        conn = Faraday.new(:url => Veyor.base_url, :request => options) do |f|
+        $conn = Faraday.new(:url => Veyor.base_url, :request => options) do |f|
           f.request :url_encoded
           f.response :logger
           f.adapter  Faraday.default_adapter
-          f.use FaradayMiddleware::RaiseHttpException
+          # f.use FaradayMiddleware::RaiseHttpException
         end
       else
-        conn = Faraday.new(:url => Veyor.base_url, :request => options) do |f|
+        $conn = Faraday.new(:url => Veyor.base_url, :request => options) do |f|
           f.request :url_encoded
           f.adapter  Faraday.default_adapter
-          f.use FaradayMiddleware::RaiseHttpException
+          # f.use FaradayMiddleware::RaiseHttpException
         end
       end
 
-      conn.headers[:user_agent] = make_ua
-      conn.headers["X-USER-AGENT"] = make_ua
-
-      res = veyor_get(self.route)
-      return MultiJson.load(res.body)
+      $conn.headers[:user_agent] = make_ua
+      $conn.headers["X-USER-AGENT"] = make_ua
     end
-  end
-end
 
-def veyor_get(route)
-  conn.get do |req|
-    req.url '/api/' + route
-    req.headers["Content-Type"] = "application/json"
-    req.headers["Authorization"] = "Bearer " + Veyor.account_token
-  end
-end
+    def _veyor_get(route, opts)
+      $conn.get do |req|
+        req.url '/api/' + route
+        req.params = opts
+        req.headers["Content-Type"] = "application/json"
+        req.headers["Authorization"] = "Bearer " + Veyor.account_token
+      end
+    end
 
-def veyor_post
-  conn.post do |req|
-    req.url '/api/builds'
-    req.headers["Content-Type"] = "application/json"
-    req.headers["Authorization"] = "Bearer " + Veyor.account_token
-    req.body = body
+    def _veyor_post(route, body)
+      $conn.post do |req|
+        req.url '/api/' + route
+        req.body = MultiJson.dump(body)
+        req.headers["Content-Type"] = "application/json"
+        req.headers["Authorization"] = "Bearer " + Veyor.account_token
+      end
+    end
+
+    def _veyor_delete(route)
+      $conn.delete do |req|
+        req.url '/api/' + route
+        req.headers["Authorization"] = "Bearer " + Veyor.account_token
+      end
+    end
+
+    def parse_result(z)
+      if z.headers['content-type'].match('json').nil?
+        return z.body
+      else
+        return MultiJson.load(z.body)
+      end
+    end
+
   end
 end

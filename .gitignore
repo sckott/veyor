@@ -34,3 +34,14 @@ build/
 .rvmrc
 
 cache/
+=======
+/.bundle/
+/.yardoc
+/Gemfile.lock
+/_yardoc/
+/coverage/
+/doc/
+/pkg/
+/spec/reports/
+/tmp/
+*.gem
