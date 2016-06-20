@@ -37,6 +37,10 @@ rake install
 
 More to come in future `veyor` versions
 
+## Changes
+
+For changes see the [Changelog](https://github.com/sckott/veyor/blob/master/CHANGELOG.md)
+
 ## Usage
 
 ```ruby

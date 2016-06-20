@@ -1,3 +1,3 @@
-## 0.0.1 (2016-03-13)
+## 0.1.0 (2016-06-20)
 
-* in dev
+* first Rubygems release
