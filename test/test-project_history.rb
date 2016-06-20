@@ -13,7 +13,7 @@ class TestProjectHistory < Test::Unit::TestCase
   def test_project_history_basic
     res = Veyor.project_history(project: 'cowsay')
     assert_equal(Hash, res.class)
-    assert_true(res['builds'].collect { |x| x['status'] }.uniq.map{ |x| x.match(/success/) }.any?)
+    assert_equal(Array, res['builds'].collect { |x| x['status'] }.class)
     assert_equal('sckott', res['project']['accountName'])
   end
 
