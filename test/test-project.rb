@@ -33,7 +33,7 @@ class TestProject < Test::Unit::TestCase
     assert_equal('changeback', res['build']['branch'])
   end
 
-  def test_project_branch_param
+  def test_project_version_param
     res = Veyor.project(project: 'cowsay', version: '1.0.692')
     assert_equal(Hash, res.class)
     assert_equal('1.0.692', res['build']['version'])
