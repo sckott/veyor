@@ -6,7 +6,6 @@ if ENV['CI']=='true'
 end
 
 require "veyor"
-require 'fileutils'
 require "test/unit"
 
 class TestProject < Test::Unit::TestCase
