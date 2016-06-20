@@ -2,7 +2,6 @@ veyor
 =====
 
 [![Build Status](https://travis-ci.org/sckott/veyor.svg?branch=master)](https://travis-ci.org/sckott/veyor)
-[![codecov.io](http://codecov.io/github/sckott/veyor/coverage.svg?branch=master)](http://codecov.io/github/sckott/veyor?branch=master)
 [![gem version](https://img.shields.io/gem/v/veyor.svg)](https://rubygems.org/gems/veyor)
 
 `veyor` is a low level client for the [Appveyor API](https://www.appveyor.com/docs/api)
