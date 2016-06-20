@@ -5,7 +5,7 @@ veyor
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Development version
 
 ```
 git clone https://github.com/sckott/veyor.git

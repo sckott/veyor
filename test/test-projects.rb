@@ -8,7 +8,6 @@ end
 require "veyor"
 require 'fileutils'
 require "test/unit"
-require "json"
 
 class TestProjects < Test::Unit::TestCase
 
