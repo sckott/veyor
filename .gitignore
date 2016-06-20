@@ -16,6 +16,7 @@ build/
 
 ## Documentation cache and generated files:
 /.yardoc/
+/.yardopts
 /_yardoc/
 /doc/
 /rdoc/

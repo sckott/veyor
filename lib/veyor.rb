@@ -5,26 +5,12 @@ require 'rexml/document'
 require 'rexml/xpath'
 
 # @!macro veyor_params
-#   @param offset [Fixnum] Number of record to start at, from 1 to infinity.
-#   @param limit [Fixnum] Number of results to return. Not relavant when searching with specific dois. Default: 20. Max: 1000
-#   @param sample [Fixnum] Number of random results to return. when you use the sample parameter,
-#       the limit and offset parameters are ignored. This parameter only used when works requested.
-#   @param sort [String] Field to sort on, one of score, relevance,
-#       updated (date of most recent change to metadata - currently the same as deposited),
-#       deposited (time of most recent deposit), indexed (time of most recent index), or
-#       published (publication date). Note: If the API call includes a query, then the sort
-#       order will be by the relevance score. If no query is included, then the sort order
-#       will be by DOI update date.
-#   @param order [String] Sort order, one of 'asc' or 'desc'
-#   @param facet [Boolean] Include facet results. Default: false
-#   @param verbose [Boolean] Print request headers to stdout. Default: false
-#   @param account [String] Appveyor account name. Default: what's set in env var
-#   @param project [String] Project name
-#   @param version [String] Build version
+#   @param account [String] An Appveyor account name
+#   @param project [String] An Appveyor project name
 #   @param verbose [Boolean] Print request headers to stdout. Default: false
 
 # @!macro history_params
-#   @param limit [String] Records per page
+#   @param limit [Fixnum] Records per page
 #   @param start_build [String] Build version to start at
 #   @param branch [String] Branch name
 
@@ -42,57 +28,35 @@ require 'rexml/xpath'
 #     - oauth [Hash] A hash with OAuth details
 
 ##
-# veyor - The top level module for using methods
+# `Veyor` - The top level module for using methods
 # to access veyor APIs
 #
-# The following methods, matching the main Crossref API routes, are available:
-# * `veyor.works` - Use the /works endpoint
-# * `veyor.members` - Use the /members endpoint
-# * `veyor.prefixes` - Use the /prefixes endpoint
-# * `veyor.funders` - Use the /funders endpoint
-# * `veyor.journals` - Use the /journals endpoint
-# * `veyor.types` - Use the /types endpoint
-# * `veyor.licenses` - Use the /licenses endpoint
+# The following methods are provided:
+# * `Veyor.project` - get project by name, branch, or build version
+# * `Veyor.projects` - get all projects
+# * `Veyor.project_history` - get project history
+# * `Veyor.project_deployments` - get project deployments
+# * `Veyor.project_settings` - get project settings
+# * `Veyor.build_start` - start a build
+# * `Veyor.build_cancel` - cancel a build
 #
-# Additional methods
-# * `veyor.agency` - test the registration agency for a DOI
-# * `veyor.content_negotiation` - Conent negotiation
-# * `veyor.citation_count` - Citation count
-# * `veyor.csl_styles` - get CSL styles
+# More will be added in future `veyor` versions
 #
-# All routes return an array of hashes
-# For example, if you want to inspect headers returned from the HTTP request,
-# and parse the raw result in any way you wish.
-#
-# @see https://github.com/CrossRef/rest-api-doc/blob/master/rest_api.md for
-# detailed description of the Crossref API
-#
-# What am I actually searching when using the Crossref search API?
-#
-# You are using the Crossref search API described at
-# https://github.com/CrossRef/rest-api-doc/blob/master/rest_api.md.
-# When you search with query terms, on Crossref servers they are not
-# searching full text, or even abstracts of articles, but only what is
-# available in the data that is returned to you. That is, they search
-# article titles, authors, etc. For some discussion on this, see
-# https://github.com/CrossRef/rest-api-doc/issues/101
-# * `Veyor.projects` - Use the /projects endpoint
-# * `Veyor.project` - Use the /projects/{account name}/{project slug} endpoint
-#
-# @see http://www.appveyor.com/docs/api/projects-builds for API docs
+# @see https://www.appVeyor.com/docs/api/ for
+# detailed description of the Appveyor API
 
 module Veyor
   extend Configuration
 
   define_setting :account_name, ENV['APPVEYOR_ACCOUNT_NAME']
   define_setting :account_token, ENV['APPVEYOR_API_TOKEN']
-  define_setting :base_url, "https://ci.appveyor.com"
+  define_setting :base_url, "https://ci.appVeyor.com"
 
   ##
   # Fetch projects
   #
   # @!macro veyor_options
-  # @!macro veyor_params
+  # @param verbose [Boolean] Print request headers to stdout. Default: false
   # @return [Array] An array of hashes
   #
   # @example
@@ -109,6 +73,7 @@ module Veyor
   # @!macro veyor_options
   # @!macro veyor_params
   # @param branch [String] Branch name
+  # @param version [String] Project version
   # @return [Array] An array of hashes
   #
   # @example
@@ -137,7 +102,6 @@ module Veyor
   # @!macro veyor_options
   # @!macro veyor_params
   # @!macro history_params
-  # @param branch [String] Branch name
   # @return [Array] An array of hashes
   #
   # @example
@@ -184,6 +148,7 @@ module Veyor
   #
   # @!macro veyor_options
   # @!macro veyor_params
+  # @param yaml [Boolean] Return yaml version of project settings. Default: false
   # @return [Array] An array of hashes
   #
   # @example
@@ -225,6 +190,7 @@ module Veyor
   #
   # @!macro veyor_options
   # @!macro veyor_params
+  # @param version [String] Project version
   # @return [Array] An array of hashes
   #
   # @example

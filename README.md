@@ -11,6 +11,12 @@ API docs: <https://www.appveyor.com/docs/api>
 
 ## Installation
 
+Stable version
+
+```
+gem install veyor
+```
+
 Development version
 
 ```
@@ -19,16 +25,17 @@ cd veyor
 rake install
 ```
 
-## gem API
+## veyor API
 
-* `Veyor.projects` - get all projects
 * `Veyor.project` - get project by name, branch, or build version
+* `Veyor.projects` - get all projects
 * `Veyor.project_history` - get project history
 * `Veyor.project_deployments` - get project deployments
 * `Veyor.project_settings` - get project settings
 * `Veyor.build_start` - start a build
 * `Veyor.build_cancel` - cancel a build
-* more to come ...
+
+More to come in future `veyor` versions
 
 ## Usage
 
@@ -65,7 +72,7 @@ Veyor.project(project: 'cowsay')
 ### get project history
 
 ```ruby
-x = Veyor.project_history(project: 'cowsay')
+Veyor.project_history(project: 'cowsay')
 ```
 
 ### start a build
@@ -82,7 +89,7 @@ Veyor.build_cancel(project: 'cowsay', version: '1.0.697')
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/veyor. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Code of Conduct][CONDUCT.md].
 
 
 ## License
