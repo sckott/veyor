@@ -96,9 +96,14 @@ veyor
 
 ```
 Commands:
-  veyor help [COMMAND]  # Describe available commands or one specific command
-  veyor project [Name]  # List a project
-  veyor projects        # List projects
+  veyor cancel [Name] --version=VERSION  # Cancel build of branch of most recent commit
+  veyor deployments [Name]               # Get project deployments
+  veyor help [COMMAND]                   # Describe available commands or one specific command
+  veyor history [Name]                   # Get project history
+  veyor project [Name]                   # List a project
+  veyor projects                         # List projects
+  veyor settings [Name]                  # List a project's settings
+  veyor start [Name]                     # Start build of branch of most recent commit
 ```
 
 List your projects

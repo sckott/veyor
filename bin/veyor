@@ -3,6 +3,7 @@
 require "thor"
 require "veyor"
 require "multi_json"
+require "date"
 
 class Yey < Thor
 
@@ -60,8 +61,9 @@ class Yey < Thor
     "cancelled"
   LONGDESC
   option :json, :type => :boolean, :default => false
+  option :account, :type => :string, :default => nil
   def project(name)
-    out = Veyor.project(project: name)
+    out = Veyor.project(project: name, account: options[:account])
     if out.keys.length == 1 and out.keys[0] == "message"
       puts "project not found"
     else
@@ -75,6 +77,170 @@ class Yey < Thor
       else
         puts MultiJson.encode(out)
       end
+    end
+  end
+
+
+  desc "history [Name]", "Get project history"
+  long_desc <<-LONGDESC
+    `veyor history` get's project history
+
+    # Get project history
+    \x5$ veyor history cowsay
+
+    # Get project history - start at
+    \x5$ veyor history cowsay --start_build=2872582
+
+    # Get project history - certain branch
+    \x5$ veyor history cowsay --branch='changeback'
+
+    # Get project history - limit results
+    \x5$ veyor history cowsay --limit=3
+
+    # Get project history - json, parse with jq
+    \x5$ veyor history cowsay --json | jq .builds[].message
+  LONGDESC
+  option :json, :type => :boolean, :default => false
+  option :account, :type => :string, :default => nil
+  option :branch, :type => :string, :default => 'master'
+  option :start_build, :type => :numeric, :default => nil
+  option :limit, :type => :numeric, :default => 10
+  def history(name)
+    out = Veyor.project_history(project: name, account: options[:account],
+      limit: options[:limit], start_build: options[:start_build],
+      branch: options[:branch])
+    if out.keys.length == 1 and out.keys[0] == "message"
+      puts "project not found"
+    else
+      if !options[:json]
+        puts 'project: ' + out['project']['name']
+        puts 'Builds ----------'
+        out['builds'].each do |x|
+          puts '  build ID:      ' + x['buildId'].to_s
+          puts '  build #:       ' + x['buildNumber'].to_s
+          puts '  build version: ' + x['version']
+          puts '  build status:  ' + x['status'].upcase
+          puts '  created: ' + DateTime.parse(x['created']).to_time.to_s
+          puts
+        end
+        puts
+      else
+        puts MultiJson.encode(out)
+      end
+    end
+  end
+
+
+  desc "deployments [Name]", "Get project deployments"
+  long_desc <<-LONGDESC
+    `veyor deployments` get a project's deployments - gives back only JSON for now
+
+    # Get deployments for a project
+    \x5$ veyor deployments cowsay
+  LONGDESC
+  option :account, :type => :string, :default => nil
+  def deployments(name)
+    out = Veyor.project_deployments(account: options[:account], project: name)
+    if out.keys.length == 1 and out.keys[0] == "message"
+      puts "project not found"
+    else
+      puts MultiJson.encode(out)
+    end
+  end
+
+
+  desc "settings [Name]", "List a project's settings"
+  long_desc <<-LONGDESC
+    `veyor settings` list a project's settings
+
+    # Get settings for a project
+    \x5$ veyor settings cowsay
+  LONGDESC
+  option :json, :type => :boolean, :default => false
+  option :account, :type => :string, :default => nil
+  def settings(name)
+    out = Veyor.project_settings(account: options[:account], project: name)
+    if out.keys.length == 1 and out.keys[0] == "message"
+      puts "project not found"
+    else
+      if !options[:json]
+        puts 'project: ' + out['project']['name']
+        puts 'repository: ' + out['project']['repositoryName']
+        puts 'projectId: ' + out['project']['projectId'].to_s
+        puts 'accountId: ' + out['project']['accountId'].to_s
+        puts 'accountName: ' + out['project']['accountName']
+        puts 'repositoryType: ' + out['project']['repositoryType']
+        puts 'repositoryScm: ' + out['project']['repositoryScm']
+        puts 'repositoryName: ' + out['project']['repositoryName']
+        puts 'isPrivate: ' + out['project']['isPrivate'].to_s
+        puts 'skipBranchesWithoutAppveyorYml: ' + out['project']['skipBranchesWithoutAppveyorYml'].to_s
+        puts 'enableSecureVariablesInPullRequests: ' + out['project']['enableSecureVariablesInPullRequests'].to_s
+        puts 'enableDeploymentInPullRequests: ' + out['project']['enableDeploymentInPullRequests'].to_s
+        puts 'rollingBuilds: ' + out['project']['rollingBuilds'].to_s
+        puts 'alwaysBuildClosedPullRequests: ' + out['project']['alwaysBuildClosedPullRequests'].to_s
+        puts 'scheduleCrontabExpression: ' + out['settings']['scheduleCrontabExpression'].to_s
+        puts 'versionFormat: ' + out['settings']['versionFormat'].to_s
+        puts 'repositoryType: ' + out['settings']['repositoryType'].to_s
+        puts 'webhookId: ' + out['settings']['webhookId'].to_s
+        puts 'webhookUrl: ' + out['settings']['webhookUrl'].to_s
+        puts
+      else
+        puts MultiJson.encode(out)
+      end
+    end
+  end
+
+
+  desc "start [Name]", "Start build of branch of most recent commit"
+  long_desc <<-LONGDESC
+    `veyor start` name
+
+    \x5$ veyor start ccafs
+
+    \x5$ veyor start ccafs --branch=dev
+
+    \x5$ veyor start ccafs --account=foobar --branch=dev
+  LONGDESC
+  option :json, :type => :boolean, :default => false
+  option :account, :type => :string, :default => nil
+  option :branch, :type => :string, :default => 'master'
+  def start(name)
+    out = Veyor.build_start(account: options[:account], project: name, branch: options[:branch])
+    if out.keys.length == 1 and out.keys[0] == "message"
+      puts "project not found"
+    else
+      if !options[:json]
+        puts 'project: ' + name
+        puts 'build ID: ' + out['buildId'].to_s
+        puts 'build #: ' + out['buildNumber'].to_s
+        puts 'version: ' + out['version']
+        puts 'branch: ' + out['branch']
+        puts 'message: ' + out['message']
+        puts 'author: ' + out['authorUsername']
+        puts 'status: ' + out['status']
+
+        puts
+      else
+        puts MultiJson.encode(out)
+      end
+    end
+  end
+
+  desc "cancel [Name]", "Cancel build of branch of most recent commit"
+  long_desc <<-LONGDESC
+    `veyor cancel`
+
+    \x5$ veyor cancel ccafs --version=1.0.41
+  LONGDESC
+  option :account, :type => :string, :default => nil
+  option :version, :type => :string, :required => true
+  def cancel(name)
+    out = Veyor.build_cancel(account: options[:account], project: name, version: options[:version])
+    if out.class == Fixnum and out == 204
+      puts "build %s cancelled" % options[:version]
+    else
+      puts "error\n"
+      puts out
     end
   end
 
