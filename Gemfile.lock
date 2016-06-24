@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    veyor (0.1.1.9800)
+    veyor (0.1.2)
       faraday (~> 0.9.2)
       faraday_middleware (~> 0.10.0)
       multi_json (~> 1.12, >= 1.12.1)
