@@ -1,3 +1,3 @@
 module Veyor
-  VERSION = "0.1.1.9800"
+  VERSION = "0.1.2"
 end
