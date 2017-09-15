@@ -86,6 +86,26 @@ Veyor.build_start(project: 'cowsay')
 Veyor.build_cancel(project: 'cowsay', version: '1.0.697')
 ```
 
+### Kill all builds
+
+Sometimes all your builds are queued and you need to kill all of them
+
+```ruby
+x = Veyor.projects();
+x.each do |z|
+  nm = z['name']
+  puts "working on " + nm
+  if z["builds"].length > 0
+    # each build
+    z["builds"].each do |w|
+      if w['status'] == "queued"
+        Veyor.build_cancel(project: nm, version: w['version'])
+      end
+    end
+  end
+end
+```
+
 ## On the CLI
 
 List commands
@@ -174,8 +194,6 @@ veyor project cowsay --json | jq .project
   "enableSecu
 ...cutoff
 ```
-
-
 
 ## Contributing
 
