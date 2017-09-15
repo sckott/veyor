@@ -86,7 +86,7 @@ Veyor.build_start(project: 'cowsay')
 Veyor.build_cancel(project: 'cowsay', version: '1.0.697')
 ```
 
-### Kill all builds
+### Kill all queued builds
 
 Sometimes all your builds are queued and you need to kill all of them
 
