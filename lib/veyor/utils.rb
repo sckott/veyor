@@ -30,3 +30,22 @@ def prep_route(route, account, project, branch, version)
   end
   return route
 end
+
+
+def check_provider(x)
+  appveyor_providers = ["gitHub",
+    "bitBucket",
+    "vso",
+    "gitLab",
+    "kiln",
+    "stash",
+    "git",
+    "mercurial",
+    "subversion"]
+  
+  if appveyor_providers.include? x
+    return x
+  else
+    raise 'provider must be one of: %s' % appveyor_providers.join(', ')
+  end 
+end

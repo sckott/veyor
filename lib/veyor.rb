@@ -61,10 +61,10 @@ module Veyor
   #
   # @example
   #      require 'veyor'
-  #      Veyor.projects()
+  #      Veyor.projects
   def self.projects(options: nil, verbose: false)
     route = prep_route('projects', nil, nil, nil, nil)
-    Request.new(route, nil, nil, options, verbose).get
+    Request.new(route, {}, nil, options, verbose).get
   end
 
   ##
@@ -93,7 +93,44 @@ module Veyor
     version: nil, options: nil, verbose: false)
 
     route = prep_route('projects', get_account(account), project, branch, version)
-    Request.new(route, nil, nil, options, verbose).get
+    Request.new(route, {}, nil, options, verbose).get
+  end
+
+  ##
+  # Add a project
+  #
+  # @!macro veyor_options
+  # @!macro veyor_params
+  # @param provider [String] provider name, one of gitHub, bitBucket, vso, 
+  #   gitLab, kiln, stash, git, mercurial, subversion
+  # @param slug [String] a project slug like e.g., foo/bar
+  # @return [Hash] A hash
+  #
+  # @example
+  #      require 'veyor'
+  #      Veyor.project_add(provider: 'gitHub', slug: 'sckott/httpcode')
+  def self.project_add(provider:, slug:, options: nil, verbose: false)
+    route = prep_route('projects', nil, nil, nil, nil)
+    body = { :repositoryProvider => check_provider(provider),
+      :repositoryName => slug }
+    Request.new(route, {}, body, options, verbose).post
+  end
+
+  ##
+  # Delete a project
+  #
+  # @!macro veyor_options
+  # @!macro veyor_params
+  # @param account [String] Branch name
+  # @param project [String] Project slug
+  # @return [Int] 204 on success
+  #
+  # @example
+  #      require 'veyor'
+  #      Veyor.project_delete(account: 'sckott', project: 'httpcode')
+  def self.project_delete(account:, project:, options: nil, verbose: false)
+    route = prep_route('projects', account, project, nil, nil)
+    Request.new(route, {}, nil, options, verbose).delete
   end
 
   ##
@@ -107,7 +144,7 @@ module Veyor
   # @example
   #      require 'veyor'
   #      # get project history
-  #      x = Veyor.project_history(project: 'cowsay')
+  #      x = Veyor.project_history(project: 'cowsay');
   #      x['builds'].collect { |x| x['status'] }
   #
   #      # limit results
@@ -135,12 +172,12 @@ module Veyor
   #
   # @example
   #      require 'veyor'
-  #      # get project history
-  #      x = Veyor.project_deployments(project: 'cowsay')
+  #      # get project deployments
+  #      x = Veyor.project_deployments(project: 'cowsay');
   #      x['deployments']
   def self.project_deployments(account: nil, project: nil, options: nil, verbose: false)
     route = sprintf('/projects/%s/%s/deployments', get_account(account), project)
-    Request.new(route, nil, nil, options, verbose).get
+    Request.new(route, {}, nil, options, verbose).get
   end
 
   ##
@@ -164,7 +201,7 @@ module Veyor
     if yaml
       route = route + '/yaml'
     end
-    Request.new(route, nil, nil, options, verbose).get
+    Request.new(route, {}, nil, options, verbose).get
   end
 
   ##
@@ -182,7 +219,7 @@ module Veyor
   def self.build_start(account: nil, project:, branch: 'master', options: nil, verbose: false)
     body = { :accountName => get_account(account),
       :projectSlug => project, :branch => branch }
-    Request.new('builds', nil, body, options, verbose).post
+    Request.new('builds', {}, body, options, verbose).post
   end
 
   ##
@@ -191,16 +228,80 @@ module Veyor
   # @!macro veyor_options
   # @!macro veyor_params
   # @param version [String] Project version
-  # @return [Array] An array of hashes
+  # @return [Int] 204 on success
   #
   # @example
   #      require 'veyor'
   #      # start a build
   #      x = Veyor.build_start(project: 'cowsay')
-  #      x = Veyor.build_cancel(project: 'cowsay', version: '1.0.697')
+  #      x = Veyor.build_cancel(project: 'cowsay', version: '1.0.6088')
   def self.build_cancel(account: nil, project:, version:, options: nil, verbose: false)
     route = sprintf('/builds/%s/%s/%s', get_account(account), project, version)
-    Request.new(route, nil, nil, options, verbose).delete
+    Request.new(route, {}, nil, options, verbose).delete
   end
+
+  ##
+  # Delete a build
+  #
+  # @!macro veyor_options
+  # @!macro veyor_params
+  # @param build_id [String] Build ID
+  # @return [Int] 204 on success
+  #
+  # @example
+  #      require 'veyor'
+  #      # start a build
+  #      x = Veyor.build_start(project: 'cowsay')
+  #      x = Veyor.build_delete(build_id: '17962865')
+  def self.build_delete(build_id:, options: nil, verbose: false)
+    route = sprintf('/builds/%s', build_id)
+    Request.new(route, {}, nil, options, verbose).delete
+  end
+
+  ##
+  # Download a build log
+  #
+  # @!macro veyor_options
+  # @!macro veyor_params
+  # @param job_id [String] Build ID
+  # @return [Array] An array of hashes
+  #
+  # @example
+  #      require 'veyor'
+  #      x = Veyor.build_log(job_id: '1.0.1267')
+  def self.build_log(job_id:, options: nil, verbose: false)
+    route = sprintf('/buildjobs/%s/log', job_id)
+    Request.new(route, {}, nil, options, verbose).get
+  end
+
+  # environments
+  ##
+  # Get environments
+  #
+  # @!macro veyor_options
+  # @!macro veyor_params
+  # @return [Array] An array of hashes
+  #
+  # @example
+  #      require 'veyor'
+  #      x = Veyor.environments
+  def self.environments(options: nil, verbose: false)
+    Request.new('environments', {}, nil, options, verbose).get
+  end
+
+  # Get environment settings
+  #
+  # @!macro veyor_options
+  # @!macro veyor_params
+  # @param id [String] A deployment environment ID
+  # @return [Array] An array of hashes
+  #
+  # @example
+  #      require 'veyor'
+  #      Veyor.environment_settings(id: 1536)
+  def self.environment_settings(id:, options: nil, verbose: false)
+    route = sprintf('/environments/%s/settings', id)
+    Request.new(route, {}, nil, options, verbose).get
+  end  
 
 end
