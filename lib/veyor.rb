@@ -42,7 +42,7 @@ require 'rexml/xpath'
 #
 # More will be added in future `veyor` versions
 #
-# @see https://www.appVeyor.com/docs/api/ for
+# @see https://www.appveyor.com/docs/api/ for
 # detailed description of the Appveyor API
 
 module Veyor
@@ -50,7 +50,7 @@ module Veyor
 
   define_setting :account_name, ENV['APPVEYOR_ACCOUNT_NAME']
   define_setting :account_token, ENV['APPVEYOR_API_TOKEN']
-  define_setting :base_url, "https://ci.appVeyor.com"
+  define_setting :base_url, "https://ci.appveyor.com"
 
   ##
   # Fetch projects

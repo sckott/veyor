@@ -14,7 +14,7 @@ def get_account(x)
 	if x.nil?
 	  x = Veyor.account_name
 	  if x.nil?
-	  	raise 'no account name found - one must be supplied'
+	  	raise 'could not find env var APPVEYOR_ACCOUNT_NAME; please set it'
 	  end
 	end
 	return x

@@ -52,30 +52,42 @@ module Veyor
     end
 
     def _veyor_get(route, opts)
+      tok = Veyor.account_token
+      if tok.nil?
+        raise 'could not find env var APPVEYOR_API_TOKEN; please set it'
+      end
       conn = get_conn
       conn.get do |req|
         req.url '/api/' + route
         req.params = opts
         req.headers["Content-Type"] = "application/json"
-        req.headers["Authorization"] = "Bearer " + Veyor.account_token
+        req.headers["Authorization"] = "Bearer " + tok
       end
     end
 
     def _veyor_post(route, body)
+      tok = Veyor.account_token
+      if tok.nil?
+        raise 'could not find env var APPVEYOR_API_TOKEN; please set it'
+      end
       conn = get_conn
       conn.post do |req|
         req.url '/api/' + route
         req.body = MultiJson.dump(body)
         req.headers["Content-Type"] = "application/json"
-        req.headers["Authorization"] = "Bearer " + Veyor.account_token
+        req.headers["Authorization"] = "Bearer " + tok
       end
     end
 
     def _veyor_delete(route)
+      tok = Veyor.account_token
+      if tok.nil?
+        raise 'could not find env var APPVEYOR_API_TOKEN; please set it'
+      end
       conn = get_conn
       conn.delete do |req|
         req.url '/api/' + route
-        req.headers["Authorization"] = "Bearer " + Veyor.account_token
+        req.headers["Authorization"] = "Bearer " + tok
       end
     end
 
