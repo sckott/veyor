@@ -263,7 +263,7 @@ module Veyor
   #
   # @!macro veyor_options
   # @!macro veyor_params
-  # @param job_id [String] Build ID
+  # @param job_id [String] Job ID
   # @return [Array] An array of hashes
   #
   # @example
@@ -271,6 +271,22 @@ module Veyor
   #      x = Veyor.build_log(job_id: '1.0.1267')
   def self.build_log(job_id:, options: nil, verbose: false)
     route = sprintf('/buildjobs/%s/log', job_id)
+    Request.new(route, {}, nil, options, verbose).get
+  end
+
+  ##
+  # List artifacts of a job
+  #
+  # @!macro veyor_options
+  # @!macro veyor_params
+  # @param job_id [String] Job ID
+  # @return [Array] An array of hashes
+  #
+  # @example
+  #      require 'veyor'
+  #      x = Veyor.build_artifacts(job_id: '1.0.1267')
+  def self.build_artifacts(job_id:, options: nil, verbose: false)
+    route = sprintf('/buildjobs/%s/artifacts', job_id)
     Request.new(route, {}, nil, options, verbose).get
   end
 
