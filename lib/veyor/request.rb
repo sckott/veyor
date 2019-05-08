@@ -53,15 +53,12 @@ module Veyor
 
     def _veyor_get(route, opts)
       tok = Veyor.account_token
-      if tok.nil?
-        raise 'could not find env var APPVEYOR_API_TOKEN; please set it'
-      end
       conn = get_conn
       conn.get do |req|
         req.url '/api/' + route
         req.params = opts
         req.headers["Content-Type"] = "application/json"
-        req.headers["Authorization"] = "Bearer " + tok
+        req.headers["Authorization"] = "Bearer " + tok if tok
       end
     end
 
