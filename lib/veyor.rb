@@ -4,9 +4,11 @@ require 'veyor/utils'
 require 'rexml/document'
 require 'rexml/xpath'
 
-# @!macro veyor_params
+# @!macro veyor_acct_proj
 #   @param account [String] An Appveyor account name
 #   @param project [String] An Appveyor project name
+
+# @!macro veyor_verbose
 #   @param verbose [Boolean] Print request headers to stdout. Default: false
 
 # @!macro history_params
@@ -56,7 +58,7 @@ module Veyor
   # Fetch projects
   #
   # @!macro veyor_options
-  # @param verbose [Boolean] Print request headers to stdout. Default: false
+  # @!macro veyor_verbose
   # @return [Array] An array of hashes
   #
   # @example
@@ -70,8 +72,9 @@ module Veyor
   ##
   # Get a single project - gets the latest build
   #
+  # @!macro veyor_acct_proj
   # @!macro veyor_options
-  # @!macro veyor_params
+  # @!macro veyor_verbose
   # @param branch [String] Branch name
   # @param version [String] Project version
   # @return [Array] An array of hashes
@@ -99,11 +102,11 @@ module Veyor
   ##
   # Add a project
   #
-  # @!macro veyor_options
-  # @!macro veyor_params
   # @param provider [String] provider name, one of gitHub, bitBucket, vso, 
   #   gitLab, kiln, stash, git, mercurial, subversion
   # @param slug [String] a project slug like e.g., foo/bar
+  # @!macro veyor_options
+  # @!macro veyor_verbose
   # @return [Hash] A hash
   #
   # @example
@@ -119,10 +122,9 @@ module Veyor
   ##
   # Delete a project
   #
+  # @!macro veyor_acct_proj
   # @!macro veyor_options
-  # @!macro veyor_params
-  # @param account [String] Branch name
-  # @param project [String] Project slug
+  # @!macro veyor_verbose
   # @return [Int] 204 on success
   #
   # @example
@@ -136,9 +138,10 @@ module Veyor
   ##
   # Get project history
   #
+  # @!macro veyor_acct_proj
   # @!macro veyor_options
-  # @!macro veyor_params
   # @!macro history_params
+  # @!macro veyor_verbose
   # @return [Array] An array of hashes
   #
   # @example
@@ -166,8 +169,9 @@ module Veyor
   ##
   # Get project deployments
   #
+  # @!macro veyor_acct_proj
   # @!macro veyor_options
-  # @!macro veyor_params
+  # @!macro veyor_verbose
   # @return [Array] An array of hashes
   #
   # @example
@@ -183,9 +187,10 @@ module Veyor
   ##
   # Get project settings
   #
-  # @!macro veyor_options
-  # @!macro veyor_params
+  # @!macro veyor_acct_proj
   # @param yaml [Boolean] Return yaml version of project settings. Default: false
+  # @!macro veyor_options
+  # @!macro veyor_verbose
   # @return [Array] An array of hashes
   #
   # @example
@@ -207,8 +212,9 @@ module Veyor
   ##
   # Start build of branch of most recent commit
   #
+  # @!macro veyor_acct_proj
   # @!macro veyor_options
-  # @!macro veyor_params
+  # @!macro veyor_verbose
   # @param branch [String] Branch name
   # @return [Array] An array of hashes
   #
@@ -225,9 +231,10 @@ module Veyor
   ##
   # Cancel a build
   #
-  # @!macro veyor_options
-  # @!macro veyor_params
+  # @!macro veyor_acct_proj
   # @param version [String] Project version
+  # @!macro veyor_options
+  # @!macro veyor_verbose
   # @return [Int] 204 on success
   #
   # @example
@@ -243,9 +250,9 @@ module Veyor
   ##
   # Delete a build
   #
-  # @!macro veyor_options
-  # @!macro veyor_params
   # @param build_id [String] Build ID
+  # @!macro veyor_options
+  # @!macro veyor_verbose
   # @return [Int] 204 on success
   #
   # @example
@@ -261,9 +268,9 @@ module Veyor
   ##
   # Download a build log
   #
-  # @!macro veyor_options
-  # @!macro veyor_params
   # @param job_id [String] Job ID
+  # @!macro veyor_options
+  # @!macro veyor_verbose
   # @return [Array] An array of hashes
   #
   # @example
@@ -277,9 +284,9 @@ module Veyor
   ##
   # List artifacts of a job
   #
-  # @!macro veyor_options
-  # @!macro veyor_params
   # @param job_id [String] Job ID
+  # @!macro veyor_options
+  # @!macro veyor_verbose
   # @return [Array] An array of hashes
   #
   # @example
@@ -295,7 +302,7 @@ module Veyor
   # Get environments
   #
   # @!macro veyor_options
-  # @!macro veyor_params
+  # @!macro veyor_verbose
   # @return [Array] An array of hashes
   #
   # @example
@@ -307,9 +314,9 @@ module Veyor
 
   # Get environment settings
   #
-  # @!macro veyor_options
-  # @!macro veyor_params
   # @param id [String] A deployment environment ID
+  # @!macro veyor_options
+  # @!macro veyor_verbose
   # @return [Array] An array of hashes
   #
   # @example
