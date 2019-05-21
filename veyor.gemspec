@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.version     = Veyor::VERSION
   s.platform    = Gem::Platform::RUBY
   s.required_ruby_version = '>= 2.0'
-  s.date        = '2019-02-15'
+  s.date        = '2019-05-21'
   s.summary     = "Appveyor Ruby Client"
   s.description = "Low Level Ruby Client for the Appveyor API"
   s.authors     = "Scott Chamberlain"
@@ -22,14 +22,14 @@ Gem::Specification.new do |s|
   s.bindir      = 'bin'
   s.executables = ['veyor']
 
-  s.add_development_dependency 'bundler', '~> 1.16', '>= 1.16.3'
-  s.add_development_dependency 'rake', '~> 12.3', '>= 12.3.1'
-  s.add_development_dependency 'test-unit', '~> 3.2', '>= 3.2.8'
+  s.add_development_dependency 'bundler', '~> 2.0', '>= 2.0.1'
+  s.add_development_dependency 'rake', '~> 12.3', '>= 12.3.2'
+  s.add_development_dependency 'test-unit', '~> 3.3', '>= 3.3.3'
   s.add_development_dependency 'simplecov', '~> 0.16.1'
-  s.add_development_dependency 'codecov', '~> 0.1.10'
+  s.add_development_dependency 'codecov', '~> 0.1.14'
 
-  s.add_runtime_dependency 'faraday', '~> 0.15.2'
-  s.add_runtime_dependency 'faraday_middleware', '~> 0.12.2'
-  s.add_runtime_dependency 'thor', '~> 0.20.0'
+  s.add_runtime_dependency 'faraday', '~> 0.15.4'
+  s.add_runtime_dependency 'faraday_middleware', '~> 0.13.1'
+  s.add_runtime_dependency 'thor', '~> 0.20.3'
   s.add_runtime_dependency 'multi_json', '~> 1.13', '>= 1.13.1'
 end
