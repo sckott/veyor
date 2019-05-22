@@ -1,9 +1,6 @@
 require "faraday"
-# require 'faraday_middleware'
 require "multi_json"
 
-# require 'veyor/faraday'
-require "veyor/error"
 require 'veyor/utils'
 require 'veyor/helpers/configuration'
 

@@ -28,11 +28,18 @@ rake install
 
 * `Veyor.project` - get project by name, branch, or build version
 * `Veyor.projects` - get all projects
+* `Veyor.project_add` - add a project
+* `Veyor.project_delete` - delete a project
 * `Veyor.project_history` - get project history
 * `Veyor.project_deployments` - get project deployments
 * `Veyor.project_settings` - get project settings
 * `Veyor.build_start` - start a build
+* `Veyor.build_delete` - delete a build
 * `Veyor.build_cancel` - cancel a build
+* `Veyor.build_artifacts` - get build artifacts
+* `Veyor.build_log` - get build logs
+* `Veyor.environments` - get environments
+* `Veyor.environment_settings` - get environment settings
 
 More to come in future `veyor` versions
 
@@ -49,10 +56,12 @@ Veyor.configuration do |config|
 end
 ```
 
-Ideally, store those in env var keys like
+Store those in env var keys like
 
 * `ENV['APPVEYOR_ACCOUNT_NAME']`
 * `ENV['APPVEYOR_API_TOKEN']`
+
+An API key is not used if not provided - we don't error when it's missing as we did before. Use `verbose=true` to see request headers sent.
 
 ## In Ruby
 
