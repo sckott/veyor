@@ -36,16 +36,27 @@ require 'rexml/xpath'
 # The following methods are provided:
 # * `Veyor.project` - get project by name, branch, or build version
 # * `Veyor.projects` - get all projects
+# * `Veyor.project_add` - add a project
+# * `Veyor.project_delete` - delete a project
 # * `Veyor.project_history` - get project history
 # * `Veyor.project_deployments` - get project deployments
 # * `Veyor.project_settings` - get project settings
 # * `Veyor.build_start` - start a build
+# * `Veyor.build_delete` - delete a build
 # * `Veyor.build_cancel` - cancel a build
+# * `Veyor.build_artifacts` - get build artifacts
+# * `Veyor.build_log` - get build logs
+# * `Veyor.environments` - get environments
+# * `Veyor.environment_settings` - get environment settings
 #
 # More will be added in future `veyor` versions
 #
 # @see https://www.appveyor.com/docs/api/ for
 # detailed description of the Appveyor API
+#
+# @see https://www.appveyor.com/docs/api/environments-deployments
+# for documentation on the Environments API
+
 
 module Veyor
   extend Configuration
@@ -275,7 +286,7 @@ module Veyor
   #
   # @example
   #      require 'veyor'
-  #      x = Veyor.build_log(job_id: '1.0.1267')
+  #      x = Veyor.build_log(job_id: '4b9u720e2sjulln9')
   def self.build_log(job_id:, options: nil, verbose: false)
     route = sprintf('/buildjobs/%s/log', job_id)
     Request.new(route, {}, nil, options, verbose).get
@@ -291,7 +302,7 @@ module Veyor
   #
   # @example
   #      require 'veyor'
-  #      x = Veyor.build_artifacts(job_id: '1.0.1267')
+  #      x = Veyor.build_artifacts(job_id: '4b9u720e2sjulln9')
   def self.build_artifacts(job_id:, options: nil, verbose: false)
     route = sprintf('/buildjobs/%s/artifacts', job_id)
     Request.new(route, {}, nil, options, verbose).get
@@ -321,7 +332,7 @@ module Veyor
   #
   # @example
   #      require 'veyor'
-  #      Veyor.environment_settings(id: 1536)
+  #      Veyor.environment_settings(id: 123456)
   def self.environment_settings(id:, options: nil, verbose: false)
     route = sprintf('/environments/%s/settings', id)
     Request.new(route, {}, nil, options, verbose).get

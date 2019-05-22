@@ -1,16 +1,16 @@
-def make_ua
+def make_ua  #:nodoc:
 	requa = 'Faraday/v' + Faraday::VERSION
   habua = 'Veyor/v' + Veyor::VERSION
   return requa + ' ' + habua
 end
 
-def prep_args(limit, start_build, branch)
+def prep_args(limit, start_build, branch) #:nodoc:
 	args = { recordsNumber: limit, startBuildId: start_build, branch: branch }
   opts = args.delete_if { |k, v| v.nil? }
   return opts
 end
 
-def get_account(x)
+def get_account(x) #:nodoc:
 	if x.nil?
 	  x = Veyor.account_name
 	  if x.nil?
@@ -20,7 +20,7 @@ def get_account(x)
 	return x
 end
 
-def prep_route(route, account, project, branch, version)
+def prep_route(route, account, project, branch, version) #:nodoc:
   if branch.nil? && version.nil?
     route = sprintf('%s/%s/%s', route, account, project)
   elsif !branch.nil? && version.nil?
@@ -32,7 +32,7 @@ def prep_route(route, account, project, branch, version)
 end
 
 
-def check_provider(x)
+def check_provider(x) #:nodoc:
   appveyor_providers = ["gitHub",
     "bitBucket",
     "vso",
