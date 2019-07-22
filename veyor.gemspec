@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.version     = Veyor::VERSION
   s.platform    = Gem::Platform::RUBY
   s.required_ruby_version = '>= 2.0'
-  s.date        = '2019-05-21'
+  s.date        = '2019-07-22'
   s.summary     = "Appveyor Ruby Client"
   s.description = "Low Level Ruby Client for the Appveyor API"
   s.authors     = "Scott Chamberlain"

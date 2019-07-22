@@ -56,6 +56,12 @@ require 'rexml/xpath'
 #
 # @see https://www.appveyor.com/docs/api/environments-deployments
 # for documentation on the Environments API
+#
+# You no longer are required to have an API key for all 
+# requests. If you're only doing GET requests against public projects 
+# you won't need a key, but if you're doing GET requests against
+# non-public projects, or non-GET requests against any projects then
+# you'll need a key.
 
 
 module Veyor
