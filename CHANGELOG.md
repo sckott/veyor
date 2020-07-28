@@ -1,3 +1,8 @@
+## 0.3.0 (2020-07-28)
+
+* bump json version for a security fix (#11)
+* update gem dependency versions to latest available
+
 ## 0.2.0 (2019-07-22)
 
 * add remainder of veyor lib methods to the cli tool (#3)
