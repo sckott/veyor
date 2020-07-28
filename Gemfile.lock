@@ -19,7 +19,7 @@ GEM
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.13.1)
       faraday (>= 0.7.4, < 1.0)
-    json (2.1.0)
+    json (2.3.1)
     multi_json (1.13.1)
     multipart-post (2.1.1)
     power_assert (1.1.4)
