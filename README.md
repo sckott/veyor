@@ -1,7 +1,7 @@
 veyor
 =====
 
-[![Build Status](https://travis-ci.org/sckott/veyor.svg?branch=master)](https://travis-ci.org/sckott/veyor)
+[![Ruby](https://github.com/sckott/veyor/workflows/Ruby/badge.svg)](https://github.com/sckott/veyor/actions?query=workflow%3ARuby)
 [![gem version](https://img.shields.io/gem/v/veyor.svg)](https://rubygems.org/gems/veyor)
 
 `veyor` is a low level client for the [Appveyor API](https://www.appveyor.com/docs/api)
